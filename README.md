@@ -1,1 +1,4 @@
 - https://www.udemy.com/course/symofny-7/
+- Authentication : 
+    - ´symfony console make:auth´
+    - ´symfony console make:registration-form´
