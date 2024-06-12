@@ -22,4 +22,17 @@ class ViewsExampleController extends AbstractController
             'elements' => ['element 1','element 2','element 3','element 4']
         ]);
     }
+
+
+    #[Route('/route/{value}', name: 'app_views_example_value', methods: ['GET', 'POST']) ]
+    public function new_route(String $value,ParameterBagInterface $param): Response
+    {
+        // dd($param->get('course_name'));
+        return $this->render('views_example/example.html.twig', [
+            'name' => $value,
+            'sentence' => 'Quem és tu ????',
+            'title' => $param->get('course_name'),
+            'elements' => ['element 1','element 2','element 3','element 4']
+        ]);
+    }
 }
