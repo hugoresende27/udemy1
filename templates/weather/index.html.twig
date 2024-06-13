@@ -20,11 +20,17 @@
         {{ form_end(form) }}
     {% endif %}
 
-    {% if app.flashes('success') %}
+    {% if message is defined %}
         <div class="alert alert-success">
-            {% for message in app.flashes('success') %}
-                <p>{{ message }}</p>
-            {% endfor %}
+          
+            <p>{{ message }}</p>
+           
+        </div>
+        {% else %}
+         <div class="alert alert-success">
+          
+            <p>{{ weatherData.location.name }}</p>
+           
         </div>
     {% endif %}
 

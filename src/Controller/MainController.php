@@ -49,9 +49,15 @@ class MainController extends AbstractController
             $weatherData = $this->weatherAPI->getWeather($latitude, $longitude);
             $isSubmittedData = true;
 
-            $this->addFlash('success', 'Weather data retrieved successfully!');
+            $message = 'Weather data retrieved successfully for '.$weatherData['location']['name'].' !';
+            // Render the form view with weather data
+            return $this->render('weather/index.html.twig', [
+                'form' => $form->createView(),
+                'weatherData' => $weatherData,
+                'submittedData' => $isSubmittedData,
+                'message' => $message
+            ]);
 
-            return $this->redirectToRoute('app_weather');
         } 
 
         // Default coordinates if form is not submitted or invalid
