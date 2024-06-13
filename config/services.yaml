@@ -6,6 +6,7 @@
 parameters:
     course_name : "This is a udemy course symfony 7"
     app.weather_api_key: '%env(WEATHER_API_KEY)%'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -20,6 +21,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
+    App\Service\WeatherAPI:
+        arguments:
+            $params: '@parameter_bag'
+            $httpClient: '@http_client'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

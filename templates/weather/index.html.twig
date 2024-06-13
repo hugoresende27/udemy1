@@ -1,0 +1,55 @@
+{# templates/weather/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Weather{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Weather Details</h1>
+
+    
+    <h2>Location</h2>
+    <ul>
+    {# Dump weatherData variable #}
+    {{ dump(weatherData) }}
+    {{ dump(submittedData) }}
+
+
+{% if form is defined and form %}
+  
+     {# Display the form #}
+    {{ form_start(form) }}
+        {{ form_row(form.latitude) }}
+        {{ form_row(form.longitude) }}
+        {# <button type="submit" class="btn btn-primary">Get Weather</button> #}
+        {# <button type="submit">{{ form_widget(form.submit) }}</button> #}
+    {{ form_end(form) }}
+
+  {% endif %}
+
+        <li>Name: {{ weatherData.location.name }}</li>
+        <li>Region: {{ weatherData.location.region }}</li>
+        <li>Country: {{ weatherData.location.country }}</li>
+        <li>Latitude: {{ weatherData.location.lat }}</li>
+        <li>Longitude: {{ weatherData.location.lon }}</li>
+        <li>Timezone: {{ weatherData.location.tz_id }}</li>
+        <li>Local Time: {{ weatherData.location.localtime }}</li>
+    </ul>
+    
+    <h2>Current Weather</h2>
+    <ul>
+        <li>Last Updated: {{ weatherData.current.last_updated }}</li>
+        <li>Temperature: {{ weatherData.current.temp_c }}°C / {{ weatherData.current.temp_f }}°F</li>
+        <li>Condition: {{ weatherData.current.condition.text }}</li>
+        <li>Wind: {{ weatherData.current.wind_kph }} km/h from {{ weatherData.current.wind_dir }}</li>
+        <li>Pressure: {{ weatherData.current.pressure_mb }} mb</li>
+        <li>Humidity: {{ weatherData.current.humidity }}%</li>
+        <!-- Add more weather details as needed -->
+    </ul>
+</div>
+{% endblock %}
