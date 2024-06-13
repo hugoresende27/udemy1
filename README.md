@@ -1,4 +1,5 @@
 - https://www.udemy.com/course/symofny-7/
+- https://www.youtube.com/watch?v=sN7aEZNklLw&ab_channel=Zizoujab
 - Authentication : 
     - ´symfony console make:auth´
     - ´symfony console make:registration-form´

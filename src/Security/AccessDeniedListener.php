@@ -30,7 +30,7 @@ class AccessDeniedListener implements EventSubscriberInterface
         // ... perform some action (e.g. logging)
 
         // optionally set the custom response
-        $event->setResponse(new Response('ok', 403));
+        $event->setResponse(new Response('denied', 403));
 
         // or stop propagation (prevents the next exception listeners from being called)
         //$event->stopPropagation();
