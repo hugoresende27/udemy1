@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Form\WeatherFormType;
@@ -7,19 +6,21 @@ use App\Service\WeatherAPI;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Monolog\Attribute\WithMonologChannel;
 
+#[WithMonologChannel('main_controller')]
 class MainController extends AbstractController
 {
-
     private WeatherAPI $weatherAPI;
+    private LoggerInterface $mainControllerLogger;
 
-    public function __construct(WeatherAPI $weatherAPI)
+    public function __construct(WeatherAPI $weatherAPI, LoggerInterface $mainControllerLogger)
     {
         $this->weatherAPI = $weatherAPI;
+        $this->mainControllerLogger = $mainControllerLogger;
     }
-
 
     #[Route('/', name: 'home')]
     public function index(): Response
@@ -29,54 +30,43 @@ class MainController extends AbstractController
         ]);
     }
 
-
     #[Route('/weather', name: 'app_weather', methods: ['GET', 'POST'])]
-    public function weather(Request $request, LoggerInterface $logger): Response
+    public function weather(Request $request): Response
     {
-        $isSubmittedData = false;
         // Create a form instance using WeatherFormType
         $form = $this->createForm(WeatherFormType::class);
-
-        // Handle form submission and validation
         $form->handleRequest($request);
 
-        $logger->info(json_encode($isSubmittedData)."-". json_encode($form));
+        $isSubmittedData = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
-                // Get form data
-                $formData = $form->getData();
-                // Retrieve weather data using coordinates from the form
-                $latitude = $formData['latitude'];
-                $longitude = $formData['longitude'];
-                $weatherData = $this->weatherAPI->getWeather($latitude, $longitude);
-                $isSubmittedData = true;
-                return $this->redirect('/weather');
-                dd($weatherData);
-                dd('1');
-                return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
-                return $this->render('weather/teste.html.twig', [
-                    'form' => $form->createView(),
-                    'weatherData' => $weatherData,
-                    'submittedData' => $isSubmittedData
-                ]);
-      
-      
-        } else {
-            // Default coordinates
-            $defaultLatitude = 40.197138482932246;
-            $defaultLongitude = -8.830379548641739;
-            // If form is not submitted or invalid, use default coordinates
-            $weatherData = $this->weatherAPI->getWeather($defaultLatitude, $defaultLongitude);
-           
-        }
+            // Get form data
+            $formData = $form->getData();
+            $latitude = $formData['latitude'];
+            $longitude = $formData['longitude'];
 
-        // Render the initial form view
+            // Retrieve weather data using coordinates from the form
+            $weatherData = $this->weatherAPI->getWeather($latitude, $longitude);
+            $isSubmittedData = true;
+
+            $this->addFlash('success', 'Weather data retrieved successfully!');
+
+            return $this->redirectToRoute('app_weather');
+        } 
+
+        // Default coordinates if form is not submitted or invalid
+        $defaultLatitude = 40.197138482932246;
+        $defaultLongitude = -8.830379548641739;
+        $weatherData = $this->weatherAPI->getWeather($defaultLatitude, $defaultLongitude);
+        
+
+        $this->mainControllerLogger->info(json_encode($isSubmittedData) . "-" . json_encode($form->getData()));
+
+        // Render the form view with weather data
         return $this->render('weather/index.html.twig', [
             'form' => $form->createView(),
             'weatherData' => $weatherData,
             'submittedData' => $isSubmittedData
         ]);
-      
-       
     }
 }
