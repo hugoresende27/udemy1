@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Subscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,7 @@ class SubscriberFormType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email', EmailType::class)
+            ->add('agreeTerms', CheckboxType::class, ['mapped' => false, 'required' => false])
             ->add('Submit', SubmitType::class)
         ;
     }
@@ -25,6 +27,9 @@ class SubscriberFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Subscriber::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token_',
+            'csrf_token_id' => 'subscriber_item'
         ]);
     }
 }

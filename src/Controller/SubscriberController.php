@@ -22,7 +22,11 @@ class SubscriberController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        $agreeTerms = $form->get('agreeTerms')->getData();
+
+
+        if ($form->isSubmitted() && $form->isValid() && $agreeTerms) {
+
             $entityManager->persist(($sub));
             $entityManager->flush();
 
