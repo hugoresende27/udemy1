@@ -25,5 +25,7 @@ services:
         arguments:
             $params: '@parameter_bag'
             $httpClient: '@http_client'
+    App\Messages\MessageHandler\OrderConfirmationEmailHandler:
+        class: App\Messages\MessageHandler\OrderConfirmationEmailHandler
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

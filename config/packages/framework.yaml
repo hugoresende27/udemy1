@@ -8,6 +8,11 @@ framework:
 
     #esi: true
     #fragments: true
+    messenger:
+        transports:
+            asynv: '%env(RABBITMQ_DSN)%'
+        routing:
+            'App\Messages\OrderConfirmationEmail': async
 
 when@test:
     framework:
