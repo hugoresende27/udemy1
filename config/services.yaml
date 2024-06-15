@@ -21,7 +21,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Service\WeatherAPI:
+    App\Services\WeatherAPI:
         arguments:
             $params: '@parameter_bag'
             $httpClient: '@http_client'

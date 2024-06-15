@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Form\WeatherFormType;
-use App\Service\WeatherAPI;
+use App\Services\WeatherAPI;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

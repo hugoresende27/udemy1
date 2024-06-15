@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App\MessageHandler\Messages;
+namespace App\Messages\MessageHandler;
 use App\Messages\OrderConfirmationEmail;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
-#[AsMessageHandler]
 
+
+#[AsMessageHandler]
 class OrderConfirmationEmailHandler
 {
     public function __invoke(OrderConfirmationEmail $orderConfirmationEmail)
